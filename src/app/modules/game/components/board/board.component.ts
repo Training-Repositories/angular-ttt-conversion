@@ -14,10 +14,7 @@ export class BoardComponent implements OnInit  {
   constructor(private boardUpdaterService: BoardUpdaterService) {
     // Subscribes to the service to update the current game state and pass to its parent
     boardUpdaterService.boardClicked$.subscribe(
-      () => {
-        this.obtainCurrentBoardState();
-        boardUpdaterService.updateBoardHistory(['test']);
-      }
+      () => this.obtainCurrentBoardState()
     );
   }
 
@@ -25,6 +22,17 @@ export class BoardComponent implements OnInit  {
   }
 
   obtainCurrentBoardState() {
-      this.squares.forEach(square => console.log(square));
+    const boardComponents = this.squares.toArray();
+    const currentBoard: string[] = new Array(9);
+
+    // Iterate over each of the children components and extract their current value
+    for (const index in boardComponents) {
+      if (boardComponents[index]) {
+        currentBoard[index] = boardComponents[index].squareValue;
+      }
+    }
+
+    // Call the service to update the parent component with the current board state
+    this.boardUpdaterService.updateBoardHistory(currentBoard);
   }
 }

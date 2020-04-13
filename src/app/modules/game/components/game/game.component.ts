@@ -25,7 +25,8 @@ export class GameComponent implements OnInit, AfterViewInit {
     // The parent subscribes to determine the next value to record for the history
     boardUpdaterService.boardUpdated$.subscribe(
       currentBoard => {
-        // console.log(currentBoard);
+        console.log(currentBoard);
+        this.checkForWinner(currentBoard);
       });
   }
 
@@ -52,7 +53,7 @@ export class GameComponent implements OnInit, AfterViewInit {
     lines.forEach((value, index) => {
       const [a, b, c] = lines[index];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        console.log('WINNER');
       }
     });
   }

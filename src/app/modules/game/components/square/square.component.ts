@@ -22,9 +22,12 @@ export class SquareComponent implements OnInit {
   }
 
   onClick() {
-    // tslint:disable-next-line: max-line-length
-    // Determine which value should be entered into the square based on the value received from the parent service, and then invert the value for the next click.
-    this.squareValue = this.xIsNext ? 'X' : 'O';
-    this.boardUpdaterService.updateClickValue(!this.xIsNext);
+    // Check if value already exists
+    if (this.squareValue == null) {
+      // tslint:disable-next-line: max-line-length
+      // Determine which value should be entered into the square based on the value received from the parent service, and then invert the value for the next click.
+      this.squareValue = this.xIsNext ? 'X' : 'O';
+      this.boardUpdaterService.updateClickValue(!this.xIsNext);
+    }
   }
 }

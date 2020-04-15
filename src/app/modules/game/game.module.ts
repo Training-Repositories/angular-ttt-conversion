@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { SquareComponent } from './components/square/square.component';
@@ -11,7 +13,11 @@ import { GameComponent } from './components/game/game.component';
         GameComponent,
         BoardComponent,
         SquareComponent],
-    imports: [FormsModule],
+    imports: [
+        BrowserModule,
+        CommonModule,
+        FormsModule
+    ],
     exports: [
         GameComponent
     ],

@@ -13,10 +13,12 @@ constructor() { }
   // Observable sources
   private boardClicked = new Subject<boolean>();
   private boardUpdated = new Subject<Array<string>>();
+  private gameWon = new Subject<boolean>();
 
   // Observable streams
   boardClicked$ = this.boardClicked.asObservable();
   boardUpdated$ = this.boardUpdated.asObservable();
+  gameWon$ = this.gameWon.asObservable();
 
   // Service commands
   updateClickValue(xIsNext: boolean) {
@@ -25,5 +27,9 @@ constructor() { }
 
   updateBoardHistory(squares: Array<string>) {
     this.boardUpdated.next(squares);
+  }
+
+  updateWinner(isGameWon: boolean) {
+    this.gameWon.next(isGameWon);
   }
 }

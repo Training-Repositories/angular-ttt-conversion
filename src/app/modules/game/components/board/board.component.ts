@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Input } from '@angular/core';
 import { BoardUpdaterService } from '../../../../services/board-updater.service';
 
 import { SquareComponent } from '../square/square.component';
@@ -8,7 +8,8 @@ import { SquareComponent } from '../square/square.component';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit  {
+export class BoardComponent implements OnInit {
+  @Input() selectedBoard: Array<string>;
   @ViewChildren(SquareComponent) squares: QueryList<SquareComponent>;
 
   constructor(private boardUpdaterService: BoardUpdaterService) {
@@ -17,14 +18,13 @@ export class BoardComponent implements OnInit  {
       () => this.obtainCurrentBoardState()
     );
   }
-
   ngOnInit() {
+
   }
 
   obtainCurrentBoardState() {
     const boardComponents = this.squares.toArray();
     const currentBoard: string[] = new Array(9);
-
     // Iterate over each of the children components and extract their current value
     for (const index in boardComponents) {
       if (boardComponents[index]) {

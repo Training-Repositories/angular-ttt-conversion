@@ -1,9 +1,9 @@
-import { BoardUpdaterService } from './../../../../services/board-updater.service';
-import { SquareComponent } from './../square/square.component';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
+import { BoardUpdaterService } from './../../../../services/board-updater.service';
+
 export interface IHistory {
-  squares: Array<string>;
+  squares: string[][];
   stepNumber: number;
   xIsNext: boolean;
 }
@@ -16,16 +16,20 @@ export interface IHistory {
 })
 export class GameComponent implements OnInit, AfterViewInit {
   history: IHistory = {
-    squares: new Array(9).fill(null),
+    squares: Array<Array<string>>(0),
     stepNumber: 0,
     xIsNext: true
   };
+  selectedBoardState = Array<string>(9).fill(null);
 
   constructor(private boardUpdaterService: BoardUpdaterService) {
+    console.log(this.history.squares);
+
     // The parent subscribes to determine the next value to record for the history
     boardUpdaterService.boardUpdated$.subscribe(
       currentBoard => {
-        console.log(currentBoard);
+        this.history.squares.push(currentBoard);  // Add current board layout to the array
+        this.history.stepNumber += 1;
         this.checkForWinner(currentBoard);
       });
   }
@@ -53,8 +57,16 @@ export class GameComponent implements OnInit, AfterViewInit {
     lines.forEach((value, index) => {
       const [a, b, c] = lines[index];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        console.log('WINNER');
+        this.boardUpdaterService.updateWinner(true);
       }
     });
+  }
+
+  onClick(moveIndex: number) {
+    // Update history to reflect the selected move sequence
+    const moveState = this.history.squares.slice(0);
+    this.history.squares = moveState.slice(0, moveIndex + 1);
+    this.selectedBoardState = this.history.squares[this.history.squares.length - 1];
+    console.log(this.selectedBoardState);
   }
 }

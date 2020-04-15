@@ -1,6 +1,26 @@
 <div class="game">
     <div class="game-board">
-        <app-board></app-board>
+        <app-board [selectedBoard]= this.selectedBoardState></app-board>
+
+        <ng-container *ngFor="let board of this.history.squares; let i = index">
+            <ng-container 
+                [ngTemplateOutlet]="i == 0 ? startButton : nextButton"
+                [ngTemplateOutletContext]="{moveIndex:i}">
+            </ng-container>
+        </ng-container>
+
+        <ng-template #startButton let-move='moveIndex'>
+            <div>
+                <input type="button" name="Button {{move}}" value="Go to game start" (click)="onClick(move)">
+            </div>
+        </ng-template>
+
+        <ng-template #nextButton let-move='moveIndex'>
+            <div>
+                <input type="button" name="Button {{move}}" value="Go to move #{{move}}" (click)="onClick(move)">
+            </div>
+        </ng-template>
+
     </div>
 </div>
 
